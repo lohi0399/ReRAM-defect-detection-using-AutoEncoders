@@ -8,28 +8,22 @@ import matplotlib.pyplot as plt
 
 
 class AE(nn.Module):
-    def __init__(self, **kwargs):
-        super().__init__()
-        self.encoder_hidden_layer = nn.Linear(
-            in_features=kwargs["input_shape"], out_features=128
+    def __init__(self, input_dim=392):
+        super(AE, self).__init__()
+        self.encoder = nn.Sequential(
+            nn.Linear(input_dim, 196),
+            nn.ReLU(),
+            nn.Linear(196, 98),
+            nn.ReLU()
         )
-        self.encoder_output_layer = nn.Linear(
-            in_features=128, out_features=128
-        )
-        self.decoder_hidden_layer = nn.Linear(
-            in_features=128, out_features=128
-        )
-        self.decoder_output_layer = nn.Linear(
-            in_features=128, out_features=kwargs["input_shape"]
+        self.decoder = nn.Sequential(
+            nn.Linear(98, 196),
+            nn.ReLU(),
+            nn.Linear(196, input_dim),
+            nn.Sigmoid()  # Assuming your input data is normalized [0, 1]
         )
 
-    def forward(self, features):
-        activation = self.encoder_hidden_layer(features)
-        activation = torch.relu(activation)
-        code = self.encoder_output_layer(activation)
-        code = torch.relu(code)
-        activation = self.decoder_hidden_layer(code)
-        activation = torch.relu(activation)
-        activation = self.decoder_output_layer(activation)
-        reconstructed = torch.relu(activation)
-        return reconstructed
+    def forward(self, x):
+        latent = self.encoder(x)
+        decoded = self.decoder(latent)
+        return decoded
