@@ -8,42 +8,46 @@ clean_currents = pd.read_csv('crossbar_clean_dynamic.csv').to_numpy()
 defective_currents = pd.read_csv('crossbar_defective_dynamic.csv').to_numpy()
 
 # Convert currents to µA for better readability
-clean_currents_ua = clean_currents * 1e6  # Convert from A to µA
-defective_currents_ua = defective_currents * 1e6  # Convert from A to µA
+clean_currents_ua = clean_currents * 1e3  # Convert from A to mA
+defective_currents_ua = defective_currents * 1e3  # Convert from A to mA
 
-# Heatmaps
+# Heatmap for deltas
 plt.figure(figsize=(14, 6))
+sns.heatmap(clean_currents_ua[:, :20] - defective_currents_ua[:, :20], cmap="Blues", cbar=True, xticklabels=False, yticklabels=False)
+plt.title("Delta Heatmap (First 20 Columns)")
+plt.grid()
+plt.show()
 
-# Heatmap for Clean Dataset
-plt.subplot(1, 2, 1)
-sns.heatmap(clean_currents_ua[:, :20], cmap="Blues", cbar=True, xticklabels=False, yticklabels=False)
-plt.title("Clean Dataset Heatmap (First 20 Columns) in µA")
-
-# Heatmap for Defective Dataset
-plt.subplot(1, 2, 2)
-sns.heatmap(defective_currents_ua[:, :20], cmap="Reds", cbar=True, xticklabels=False, yticklabels=False)
-plt.title("Defective Dataset Heatmap (First 20 Columns) in µA")
-
-plt.tight_layout()
+# Histogram for deltas
+plt.figure(figsize=(14, 6))
+plt.hist((clean_currents_ua[:, :20] - defective_currents_ua[:, :20]).flatten(), bins=50,alpha=0.7,color='orange',label='Delta')
+plt.title("Distribution of Delta Values in mA")
+plt.xlabel("Delta (mA)")
+plt.ylabel("Frequency")
+plt.grid()
 plt.show()
 
 # Histograms
 plt.figure(figsize=(12, 6))
 
+
+
 # Histogram for Clean Dataset
 plt.subplot(1, 2, 1)
 plt.hist(clean_currents_ua.flatten(), bins=50, alpha=0.7, color="blue", label="Clean Data")
-plt.title("Distribution of Clean Dataset Values in µA")
-plt.xlabel("Current (µA)")
+plt.title("Distribution of Clean Dataset Values in mA")
+plt.xlabel("Current (mA)")
 plt.ylabel("Frequency")
+plt.grid()
 plt.legend()
 
 # Histogram for Defective Dataset
 plt.subplot(1, 2, 2)
 plt.hist(defective_currents_ua.flatten(), bins=50, alpha=0.7, color="red", label="Defective Data")
-plt.title("Distribution of Defective Dataset Values in µA")
-plt.xlabel("Current (µA)")
+plt.title("Distribution of Defective Dataset Values in mA")
+plt.xlabel("Current (mA)")
 plt.ylabel("Frequency")
+plt.grid()
 plt.legend()
 
 plt.tight_layout()
