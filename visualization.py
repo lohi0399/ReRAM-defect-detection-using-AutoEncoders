@@ -53,6 +53,7 @@ plt.legend()
 plt.tight_layout()
 plt.show()
 
+
 # Calculate mean and standard deviation for both datasets
 clean_mean = np.mean(clean_currents_ua)
 clean_std = np.std(clean_currents_ua)
