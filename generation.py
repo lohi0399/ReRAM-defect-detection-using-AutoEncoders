@@ -1,3 +1,9 @@
+"""
+Artificial dataset created in to simulate random defects in memristor crossbars.
+
+"""
+
+
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
