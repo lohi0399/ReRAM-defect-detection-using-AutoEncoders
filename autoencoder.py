@@ -20,7 +20,7 @@ class AE(nn.Module):
             nn.Linear(98, 196),
             nn.ReLU(),
             nn.Linear(196, input_dim),
-            nn.Sigmoid()  # Assuming your input data is normalized [0, 1]
+            # nn.Sigmoid()  # Assuming your input data is normalized [0, 1]
         )
 
     def forward(self, x):

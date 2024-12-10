@@ -13,7 +13,7 @@ defective_currents_ua = defective_currents * 1e3  # Convert from A to mA
 
 # Heatmap for deltas
 plt.figure(figsize=(14, 6))
-sns.heatmap(clean_currents_ua[:, :20] - defective_currents_ua[:, :20], cmap="Blues", cbar=True, xticklabels=False, yticklabels=False)
+sns.heatmap(clean_currents_ua[:, :20] - defective_currents_ua[:, :20], cmap="coolwarm", cbar=True, xticklabels=False, yticklabels=False)
 plt.title("Delta Heatmap (First 20 Columns)")
 plt.grid()
 plt.show()

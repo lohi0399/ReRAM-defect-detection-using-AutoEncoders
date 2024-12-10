@@ -1,5 +1,5 @@
 """
-Artificial dataset created in to simulate random defects in memristor crossbars.
+Artificial dataset created in to simulate random defects in memristor crossbars for on-chip training
 
 """
 

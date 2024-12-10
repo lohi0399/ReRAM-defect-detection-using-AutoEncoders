@@ -14,6 +14,12 @@ def split_dataset(dataset, train_ratio=0.8):
     train_dataset, test_dataset = torch.utils.data.random_split(dataset, [train_size, test_size])
     return train_dataset, test_dataset
 
+def custom_collate_fn(batch):
+    batch = np.array(batch)
+    # Normalize the batch
+    batch = (batch - batch.mean(axis=0)) / batch.std(axis=0)
+    return torch.tensor(batch, dtype=torch.float32)
+
 def main():
         
     #---------------------------------------------------------DATA PREPARATION------------------------------------------------------------------#
@@ -23,8 +29,8 @@ def main():
 
     clean_train , clean_test = split_dataset(clean_data, train_ratio=0.8)
 
-    clean_train_dataloader = torch.utils.data.DataLoader(dataset=clean_train, batch_size=16,shuffle=False, drop_last=True)
-    clean_test_dataloader = torch.utils.data.DataLoader(dataset=clean_test, batch_size=16,shuffle=False, drop_last=True)
+    clean_train_dataloader = torch.utils.data.DataLoader(dataset=clean_train, batch_size=16,shuffle=False, drop_last=True,collate_fn=custom_collate_fn)
+    clean_test_dataloader = torch.utils.data.DataLoader(dataset=clean_test, batch_size=16,shuffle=False, drop_last=True,collate_fn=custom_collate_fn)
     
     
     #---------------------------------------------------------MODEL TRAINING------------------------------------------------------------------#
@@ -32,7 +38,7 @@ def main():
     model = AE(input_dim = 392).to(device)
     optimizer = optim.Adam(model.parameters(), lr=1e-3)
     criterion = nn.MSELoss()
-    epochs = 20
+    epochs = 300
 
     for epoch in range(epochs):
         loss = 0
