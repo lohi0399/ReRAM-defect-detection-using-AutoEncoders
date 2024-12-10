@@ -22,12 +22,12 @@ labels = torch.from_numpy(labels)
 #Train-test split
 train_inputs, train_labels = inputs[:800], labels[:800]
 test_inputs, test_labels = inputs[800:], labels[800:]
-
-train_labels_test = labels[:800]
-test_labels_test = labels[800:]
+print(train_inputs.shape)
+# train_labels_test = labels[:800]
+# test_labels_test = labels[800:]
 
 #Initialize the neural network
-model = NN(394,394)
+model = NN(1178,394)
 criterion = nn.MSELoss()
 optmizier = optim.Adam(model.parameters(), lr=1e-3)
 
@@ -37,8 +37,8 @@ for epoch in range(5000):
     # predictions = model(train_inputs[:,-394:])
     # loss = criterion(predictions,train_labels)
 
-    predictions = model(train_labels_test)
-    loss = criterion(predictions,train_labels_test)
+    predictions = model(train_inputs)
+    loss = criterion(predictions,train_labels)
     
 
     loss.backward()
@@ -50,8 +50,8 @@ for epoch in range(5000):
 #Evaluate on test data
 with torch.no_grad():
     model.eval()
-    test_predictions = model(test_labels_test)
-    test_loss = criterion(test_predictions, test_labels_test)
+    test_predictions = model(test_inputs)
+    test_loss = criterion(test_predictions, test_labels)
     print(f"Test Loss: {test_loss.item():.9f}")
 
 torch.save(model.state_dict(), 'linear_nn.pth')
