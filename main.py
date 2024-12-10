@@ -24,14 +24,14 @@ train_inputs, train_labels = inputs[:800], labels[:800]
 test_inputs, test_labels = inputs[800:], labels[800:]
 
 #Initialize the neural network
-model = NN(input_size,output_size)
+model = NN(394,394)
 criterion = nn.MSELoss()
-optmizier = optim.Adam(model.parameters(), lr=0.001)
+optmizier = optim.Adam(model.parameters(), lr=1e-3)
 
 #Training loop
-for epoch in range(300):
+for epoch in range(10000):
     optmizier.zero_grad()
-    predictions = model(train_inputs)
+    predictions = model(train_inputs[:,-394:])
     loss = criterion(predictions,train_labels)
 
     loss.backward()
@@ -43,7 +43,7 @@ for epoch in range(300):
 #Evaluate on test data
 with torch.no_grad():
     model.eval()
-    test_predictions = model(test_inputs)
+    test_predictions = model(test_inputs[:,-394:])
     test_loss = criterion(test_predictions, test_labels)
     print(f"Test Loss: {test_loss.item():.9f}")
 
